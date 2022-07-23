@@ -1,12 +1,65 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
+from sympy import re
 from .models import Todo
+from .forms import TodoForm
+from datetime import datetime
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 
+@login_required
+def completed(request):
+    todos = Todo.objects.filter(user=request.user, completed=True)
+
+    return render(request, './todo/completed.html', {'todos': todos})
+
+
+@login_required
+def create(request):
+    message = ''
+    form = TodoForm()
+
+    if request.method == 'POST':
+        message = '新增失敗!'
+        try:
+            form = TodoForm(request.POST)
+            if form.is_valid():
+                todo = form.save(commit=False)
+                todo.user = request.user
+                todo.save()
+                return redirect('todo')
+        except Exception as e:
+            print(e)
+
+    return render(request, './todo/create.html', {'form': form, 'message': message})
+
+
+@login_required
 def view(request, id):
+    message = ''
     todo = get_object_or_404(Todo, id=id)
-    print(todo)
-    return render(request, './todo/view.html', {'todo': todo})
+    form = TodoForm(instance=todo)
+
+    if request.method == 'POST':
+        if request.POST.get('delete'):
+            todo.delete()
+            return redirect('todo')
+
+        if request.POST.get('update'):
+            message = '更新失敗!'
+            try:
+                form = TodoForm(request.POST, instance=todo)
+                if form.is_valid():
+                    todo = form.save(commit=False)
+                    todo.date_completed = datetime.now().strftime('%Y-%m-%d %H:%M:%S')\
+                        if todo.completed else None
+
+                    todo.save()
+                    return redirect('todo')
+            except Exception as e:
+                print(e)
+
+    return render(request, './todo/view.html', {'todo': todo, 'form': form, 'message': message})
 
 
 def todo(request):

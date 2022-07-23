@@ -6,7 +6,10 @@
   {% for todo in todos %}
   <li>
     <a href="{% url 'view' todo.id %}">
-      {{todo.title}} {% if todo.important %}(重要) {% endif %}
+      {% if todo.completed %}
+      <s> {{todo.title}} {% if todo.important %}(重要) {% endif %}</s>
+      {% else %} {{todo.title}} {% if todo.important %}(重要) {% endif %}
+      {%endif %}
     </a>
   </li>
   {% endfor %}

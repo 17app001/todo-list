@@ -1,11 +1,9 @@
 {% extends 'base.html' %} {% block content %}
-<h1>View</h1>
+<h1>Create</h1>
 <form action="" method="POST">
   {% csrf_token %} {{form.as_p}}
-  <input type="submit" name="update" value="更新"></button>
-  <input type="submit" name="delete" value="刪除"></button>
+  <button type="submit">新增</button>
 </form>
 <p id="message">{{message}}</p>
 
 {% endblock %}
-
