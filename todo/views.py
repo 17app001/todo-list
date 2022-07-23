@@ -8,6 +8,14 @@ from django.contrib.auth.decorators import login_required
 
 
 @login_required
+def delete(request, id):
+    todo = get_object_or_404(Todo, id=id)
+    todo.delete()
+
+    return redirect('todo')
+
+
+@login_required
 def completed(request):
     todos = Todo.objects.filter(user=request.user, completed=True)
 

@@ -1,15 +1,17 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
-
+from django.contrib.auth.decorators import login_required
+from .forms import CustomUserForm
 # Create your views here.
 
 
+@login_required
 def profile(request):
-    return render(request, './user/profile.html')
+    return render(request, './user/profile.html', {'user': request.user})
 
 
+@login_required
 def user_logout(request):
     logout(request)
 
@@ -46,13 +48,14 @@ def user_login(request):
 
 def user_register(request):
     message = ''
-    form = UserCreationForm()
+    form = CustomUserForm()
 
     if request.method == 'POST':
         print(request.POST)
         username = request.POST.get('username')
         password1 = request.POST.get('password1')
         password2 = request.POST.get('password2')
+        email = request.POST.get('email')
         # 密碼問題
         if password1 != password2:
             message = '兩次密碼輸入不同'
@@ -64,7 +67,7 @@ def user_register(request):
                 message = '帳號重複'
             else:
                 user = User.objects.create_user(username=username,
-                                                password=password1)
+                                                password=password1, email=email)
                 message = '註冊失敗'
                 if user:
                     user.save()
