@@ -13,7 +13,7 @@ def profile(request):
 def user_logout(request):
     logout(request)
 
-    return redirect('profile')
+    return redirect('todo')
 
 
 def user_login(request):
@@ -37,7 +37,7 @@ def user_login(request):
                 else:
                     message = '登入成功!'
                     login(request, user)
-                    return redirect('profile')
+                    return redirect('todo')
 
     return render(request, './user/login.html', {'message': message})
 
@@ -71,7 +71,7 @@ def user_register(request):
                     message = '註冊成功!'
                     login(request, user)
 
-                    return redirect('profile')
+                    return redirect('todo')
 
         print(username, password1, password2)
 
