@@ -12,6 +12,7 @@ gunicorn = "*"
 psycopg2 = "*"
 sympy = "*"
 pandas = "*"
+whitenoise = "*"
 
 [dev-packages]
 
