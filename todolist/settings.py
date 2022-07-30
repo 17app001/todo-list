@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import pymysql
-
+import os
 pymysql.install_as_MySQLdb()
 
 
@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-#80$9z0i5=)5rag$l7p8c&$_a3gds)7of00*t&ej#3)8ia4a&c
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -87,18 +87,30 @@ DATABASES = {
     }
 }
 
-# mysql
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mssql',
-        'NAME': 'todolist',
-        'USER': 'root',
-        'PASSWORD': '12345678',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
-    }
-}
+#mysql
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'todolist',
+#         'USER': 'root',
+#         'PASSWORD': '12345678',
+#         'HOST': '127.0.0.1',
+#         'PORT': '3306',
+#     }
+# }
 
+
+#aws-mysql
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'todolist',
+#         'USER': 'root',
+#         'PASSWORD': '12345678',
+#         'HOST': 'database-1.cviktbifdeon.ap-northeast-1.rds.amazonaws.com',
+#         'PORT': '3306',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -143,3 +155,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 LOGIN_URL = '/user/login'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
